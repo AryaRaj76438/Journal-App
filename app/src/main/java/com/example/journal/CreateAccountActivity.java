@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.JournalApi;
+
 public class CreateAccountActivity extends AppCompatActivity {
 
     ActivityCreateAccountBinding createAccountBinding;
@@ -109,6 +111,11 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                                                                 // Passing information over intet to other intent
                                                                 String name = task1.getResult().getString("username");
+
+                                                                JournalApi journalApi = JournalApi.getInstance();  // Global API: Access to all
+                                                                journalApi.setUsername(name);
+                                                                journalApi.setUserId(currentUserId);
+
                                                                 Intent intent = new Intent(CreateAccountActivity.this,PostJournalActivity.class);
                                                                 intent.putExtra("username",name);
                                                                 intent.putExtra("userId",currentUserId);
