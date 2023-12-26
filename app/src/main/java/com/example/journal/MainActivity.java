@@ -12,25 +12,18 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding mainBinding;
-
-
     private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mainBinding.startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            }
-        });
+
+        mainBinding.startButton.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this,LoginActivity.class)));
 
 
 
