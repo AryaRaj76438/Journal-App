@@ -7,15 +7,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.journal.databinding.ActivityPostJournalBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.Date;
+
+import model.Journal;
 import util.JournalApi;
 
 public class PostJournalActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,6 +58,7 @@ public class PostJournalActivity extends AppCompatActivity implements View.OnCli
 //            String userId = bundle.getString("userId");
 //        }
 
+        storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         journalBinding.postCameraButton.setOnClickListener(this);
         journalBinding.postSaveJournalButton.setOnClickListener(this);
@@ -72,7 +84,7 @@ public class PostJournalActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.post_save_journal_button){
-            //
+            saveJournal();
         } else if (R.id.postCameraButton == id) {
             //get image from gallery
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT); // implicit intent
@@ -80,6 +92,47 @@ public class PostJournalActivity extends AppCompatActivity implements View.OnCli
             startActivityForResult(galleryIntent,GALLERY_CODE);
 
 
+        }
+    }
+
+    private void saveJournal() {
+        String title = journalBinding.postTitleEditView.getText().toString().trim();
+        String thought = journalBinding.postDescripEditView.getText().toString().trim();
+
+        journalBinding.postProgressBar.setVisibility(View.VISIBLE);
+
+        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(thought) && imageURi != null){
+            final StorageReference filePath = storageReference
+                    .child("journal_images") //Creating folder
+                    .child("my_images_"+ Timestamp.now().getSeconds());
+
+            filePath.putFile(imageURi)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        journalBinding.postProgressBar.setVisibility(View.INVISIBLE);
+                        filePath.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String imageUrl = uri.toString();
+                            // Create a journal model
+                            Journal journal = new Journal();
+                            journal.setTitle(title);
+                            journal.setThought(thought);
+                            journal.setImageUrl(imageUrl);
+                            journal.setTimeAdded(new Timestamp(new Date()));
+                            journal.setUserName(currentUserName);
+                            journal.setUserId(currentUserId);
+
+                            // Invoke our collectionReference
+                            collectionReference.add(journal)
+                                    .addOnSuccessListener(documentReference -> {
+                                        journalBinding.postProgressBar.setVisibility(View.INVISIBLE);
+                                        startActivity(new Intent(PostJournalActivity.this,
+                                                JournalListActivity.class));
+                                        finish();
+                                    }).addOnFailureListener(e -> Toast.makeText(PostJournalActivity.this,"Failed",Toast.LENGTH_SHORT).show());
+                        });
+                        // Save a journal instance
+                    }).addOnFailureListener(e -> journalBinding.postProgressBar.setVisibility(View.INVISIBLE));
+        }else{
+            journalBinding.postProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 
