@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "436352286013",
+    "project_id": "journal-d9522",
+    "storage_bucket": "journal-d9522.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436352286013:android:a10592bfefa60d7c945954",
+        "android_client_info": {
+          "package_name": "com.example.journal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG7M-9az9mUNker38BvEcxn7yxCPAPmbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
