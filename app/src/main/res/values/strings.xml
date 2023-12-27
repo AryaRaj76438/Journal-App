@@ -11,4 +11,5 @@
     <string name="user_name_hint">User Name</string>
     <string name="menu_title">Add Thoughts</string>
     <string name="signout">Signout</string>
+    <string name="no_thought_title">Write your first thought by clicking on \"+\" button on top</string>
 </resources>
