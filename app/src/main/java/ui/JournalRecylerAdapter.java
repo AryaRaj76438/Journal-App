@@ -1,10 +1,12 @@
 package ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,12 +47,14 @@ public class JournalRecylerAdapter extends RecyclerView.Adapter<JournalRecylerAd
         // To set image use: Picasso
         String imageUrl = journal.getImageUrl();
         viewHolder.dateAdded.setText(timeAgo);
-
+        viewHolder.name.setText(journal.getUserName());
         Picasso.get()
                 .load(imageUrl)
                 .fit()
                 .placeholder(R.drawable.tree)
                 .into(viewHolder.image);
+
+
     }
 
     @Override
@@ -61,6 +65,7 @@ public class JournalRecylerAdapter extends RecyclerView.Adapter<JournalRecylerAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title,thoughts,dateAdded,name;
         public ImageView image;
+        public ImageButton shareBtn;
         String userId,username;
         public ViewHolder(@NonNull View itemView, Context ctxt) {
             super(itemView);
@@ -69,6 +74,17 @@ public class JournalRecylerAdapter extends RecyclerView.Adapter<JournalRecylerAd
             thoughts = itemView.findViewById(R.id.journal_thought_list);
             dateAdded = itemView.findViewById(R.id.journal_timestamp_list);
             image = itemView.findViewById(R.id.journal_image_list);
+            name = itemView.findViewById(R.id.journal_row_user_name);
+            shareBtn = itemView.findViewById(R.id.journal_row_share_button);
+
+//            shareBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType("image/*");
+//                    intent.putExtra(Intent.EXTRA_STREAM,journal);
+//                }
+//            });
         }
     }
 }

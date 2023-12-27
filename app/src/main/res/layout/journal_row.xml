@@ -7,6 +7,37 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:elevation="10dp"
+        android:background="@color/green"
+        android:alpha="0.3"
+        android:gravity="end"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/journal_row_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arya Raj"
+            android:textStyle="bold"
+            android:padding="3dp"
+            android:layout_weight="1"
+            android:gravity="start"/>
+
+        <ImageButton
+            android:id="@+id/journal_row_share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_share"
+            />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -36,7 +67,7 @@
             android:text="Thoughts..."
             android:padding="10dp"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="normal"/>
 
         <TextView
             android:id="@+id/journal_timestamp_list"
